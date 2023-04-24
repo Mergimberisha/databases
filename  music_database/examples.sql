@@ -59,3 +59,5 @@ VALUES( 'Massive Attack', 'Alteernative' );
 INSERT INTO albums
 ( title, release_year )
 VALUES( 'Mezzanine', '1998' );
+
+UPDATE albums SET artist_id = '5' WHERE id = '13';
