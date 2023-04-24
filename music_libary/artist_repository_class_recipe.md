@@ -56,15 +56,15 @@ Usually, the Model class name will be the capitalised table name (single instead
 
 ```ruby
 # EXAMPLE
-# Table name: students
+# Table name: artists
 
 # Model class
-# (in lib/student.rb)
-class Student
+# (in lib/artist.rb)
+class ArtistRepository
 end
 
 # Repository class
-# (in lib/student_repository.rb)
+# (in lib/stuartistsdent_repository.rb)
 class StudentRepository
 end
 ```
@@ -80,7 +80,7 @@ Define the attributes of your Model class. You can usually map the table columns
 # Model class
 # (in lib/student.rb)
 
-class Student
+class Artist
 
   # Replace the attributes by your own columns.
   attr_accessor :id, :name, :cohort_name
