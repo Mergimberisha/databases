@@ -136,10 +136,12 @@ These examples will later be encoded as RSpec tests.
 # 1
 # Get all students
 
-repo = artistRepository.new
+repo = ArtistRepository.new
 
 artists = repo.all
-artists.
+artists.length # => 2
+artists.first.id # => '1'
+artists.first.name # => 'Pixies'
 ```
 
 Encode this example as a test.
