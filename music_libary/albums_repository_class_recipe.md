@@ -144,6 +144,11 @@ albums.first.title # => 'Bossanova'
 albums.first.release_year # => '1999'
 albums.first.artist_id # => '1'
 
+# 2
+# Get all albums when there are no albums in the DB
+
+repo = AlbumRepository.new
+albums = repo.all # => []
 
 ```
 
