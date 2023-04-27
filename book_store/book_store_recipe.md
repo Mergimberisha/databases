@@ -1,4 +1,4 @@
-# Albums Model and Repository Classes Design Recipe
+# {{TABLE NAME}} Model and Repository Classes Design Recipe
 
 _Copy this recipe template to design and implement Model and Repository classes for a database table._
 
@@ -35,19 +35,19 @@ If seed data is provided (or you already created it), you can skip this step.
 -- so we can start with a fresh state.
 -- (RESTART IDENTITY resets the primary key)
 
-TRUNCATE TABLE students RESTART IDENTITY; -- replace with your own table name.
+TRUNCATE TABLE book RESTART IDENTITY; -- replace with your own table name.
 
 -- Below this line there should only be `INSERT` statements.
 -- Replace these statements with your own seed data.
 
-INSERT INTO students (name, cohort_name) VALUES ('David', 'April 2022');
-INSERT INTO students (name, cohort_name) VALUES ('Anna', 'May 2022');
+INSERT INTO book (ttile, author_name) VALUES ('Harry Potter', 'Jk Rowling');
+INSERT INTO book (title, author_name) VALUES ('Hengry', 'Jk Rowling');
 ```
 
 Run this SQL file on the database to truncate (empty) the table, and insert the seed data. Be mindful of the fact any existing records in the table will be deleted.
 
 ```bash
-psql -h 127.0.0.1 your_database_name < seeds_{table_name}.sql
+psql -h 127.0.0.1 book_library < seeds.sql
 ```
 
 ## 3. Define the class names
@@ -60,12 +60,12 @@ Usually, the Model class name will be the capitalised table name (single instead
 
 # Model class
 # (in lib/student.rb)
-class Albums
+class Book
 end
 
 # Repository class
 # (in lib/student_repository.rb)
-class AlbumsRepository
+class BookRepository
 end
 ```
 
@@ -80,10 +80,10 @@ Define the attributes of your Model class. You can usually map the table columns
 # Model class
 # (in lib/student.rb)
 
-class Album
+class Book
 
   # Replace the attributes by your own columns.
-  attr_accessor :id, :title, :release_year, :artist_id
+  attr_accessor :id, :title, :author_name
 end
 
 # The keyword attr_accessor is a special Ruby feature
@@ -110,26 +110,19 @@ Using comments, define the method signatures (arguments and return value) and wh
 # Repository class
 # (in lib/student_repository.rb)
 
-class AlbumRepository
+class BookRepository
 
   # Selecting all records
   # No arguments
   def all
     # Executes the SQL query:
-    # SELECT id, title, release_year, artist_id FROM albums;
+    # SELECT id, name, cohort_name FROM students;
 
-    # Returns an array of Album objects.
+    # Returns an array of Student objects.
   end
 
-  # Select a single album record
-  # Given the id in argument (a number)
-
-  def find(id)
-  # Executes the SQL:
-  # SELECT id, name, genre FROM albums WHERE id = $1
-
-  # Returns a single Album object
-  end
+  # Gets a single record by its ID
+  # One argument: the id (number)
 
 end
 ```
@@ -144,45 +137,24 @@ These examples will later be encoded as RSpec tests.
 # EXAMPLES
 
 # 1
-# Get all albums
+# Get all students
 
-repo = AlbumRepository.new
-albums = repo.all
+repo = BookRepository.new
 
-albums.length # => 2
-albums.first.title # => 'Bossanova'
-albums.first.release_year # => '1999'
-albums.first.artist_id # => '1'
+books = repo.all
 
-# 2
-# Get all albums when there are no albums in the DB
+books.length # =>  2
 
-repo = AlbumRepository.new
-albums = repo.all # => []
+books[0].id # =>  1
+books[0].title # =>  'Harry Potter'
+books[0].author_name # =>  'Jk Rowling'
 
-# 3
-# Get a single album ("Bossanova")
-
-repo = AlbumRepository.new
-album = repo.find(1)
-
-album.title # => 'Bossanova'
-album.release_year # => '1999'
-album.artist_id # => '1'
-
-# 4
-# Get a single album ("Surfer Rosa")
-
-repo = AlbumRepository.new
-album = repo.find(2)
-
-album.title # => 'Surfer Rosa'
-album.release_year # => '2001'
-album.artist_id # => '1'
+books[1].id # =>  2
+books[1].title # =>  'Hengry'
+books[1].author_name # =>  'Jk Rowling'
 
 
 ```
-
 
 Encode this example as a test.
 
@@ -197,15 +169,15 @@ This is so you get a fresh table contents every time you run the test suite.
 
 # file: spec/student_repository_spec.rb
 
-def reset_students_table
-  seed_sql = File.read('spec/seeds_students.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'students' })
+def reset_books_table
+  seed_sql = File.read('spec/seeds.sql')
+  connection = PG.connect({ host: '127.0.0.1', dbname: 'book_library' })
   connection.exec(seed_sql)
 end
 
-describe StudentRepository do
+describe BookRepository do
   before(:each) do 
-    reset_students_table
+    reset_books_table
   end
 
   # (your tests will go here).
