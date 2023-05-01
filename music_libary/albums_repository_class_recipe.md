@@ -129,6 +129,13 @@ class AlbumRepository
   # SELECT id, name, genre FROM albums WHERE id = $1
 
   # Returns a single Album object
+
+  # Insert a new album
+  # Album is a new Album object
+  def create(album)
+    # INSERT INTO albums (title, release_year, artist_id) VALUES($1, $2, $3)
+
+    # Returns nothing
   end
 
 end
@@ -180,9 +187,21 @@ album.title # => 'Surfer Rosa'
 album.release_year # => '2001'
 album.artist_id # => '1'
 
+# 5
+# Insert a new album
+repo = AlbumRepository.new
 
+album = Album.new
+album.title = 'Trompe le Monde'
+album.release_year = 1991
+album.artist_id = 1
+
+repo.create(album)
+
+all_albums = repo.all
+
+# all_albums should contain the new album
 ```
-
 
 Encode this example as a test.
 
